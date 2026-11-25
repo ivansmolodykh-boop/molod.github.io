@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ЕГЭ-Информатика — подготовка к экзамену</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --primary-light: #eef2ff;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --border: #e2e8f0;
+    --code-bg: #1e293b;
+  }
+
+  body.dark {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #f1f5f9;
+    --text-light: #94a3b8;
+    --border: #334155;
+    --primary-light: #312e81;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  header {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+  nav button {
+    background: none;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-light);
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  nav button:hover, nav button.active {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .theme-toggle {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+  }
+
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.3s; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: linear-gradient(135deg, var(--primary-light), var(--card));
+    border-radius: 20px;
+    margin-bottom: 2rem;
+  }
+
+  .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary); }
+  .hero p { font-size: 1.15rem; color: var(--text-light); max-width: 600px; margin: 0 auto 1.5rem; }
+
+  .btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.85rem 1.75rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+  }
+  .btn-outline:hover { background: var(--primary); color: white; }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .stat-card .number { font-size: 2.2rem; font-weight: 800; color: var(--primary); }
+  .stat-card .label { color: var(--text-light); font-size: 0.9rem; margin-top: 0.25rem; }
+
+  .section-title { font-size: 1.75rem; margin: 2rem 0 1.5rem; color: var(--text); }
+
+  .theory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .theory-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .theory-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(79, 70, 229, 0.12);
+  }
+
+  .theory-card .icon { font-size: 2rem; margin-bottom: 0.75rem; }
+  .theory-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--text); }
+  .theory-card p { font-size: 0.9rem; color: var(--text-light); }
+
+  .badge {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 0.75rem;
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+
+  .modal {
+    background: var(--card);
+    border-radius: 16px;
+    max-width: 800px;
+    width: 100%;
+    margin: 3rem auto;
+    padding: 2rem;
+    position: relative;
+    animation: modalIn 0.3s;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--bg);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--text);
+  }
+
+  .modal h2 { margin-bottom: 1rem; color: var(--primary); }
+  .modal h3 { margin: 1.25rem 0 0.5rem; color: var(--text); }
+  .modal p, .modal li { color: var(--text-light); margin-bottom: 0.5rem; }
+  .modal ul, .modal ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+
+  .modal code {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 0.15rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  pre {
+    background: var(--code-bg);
+    color: #e2e8f0;
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    overflow-x: auto;
+    font-size: 0.88rem;
+    margin: 0.75rem 0;
+    line-height: 1.5;
+  }
+
+  pre code { background: none; color: inherit; padding: 0; }
+
+  .tip {
+    background: #fef3c7;
+    border-left: 4px solid var(--warning);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+    color: #78350f;
+    font-size: 0.9rem;
+  }
+
+  body.dark .tip { background: #422006; color: #fde68a; }
+
+  .filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    align-items: center;
+  }
+
+  .filters select {
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .task-list { display: flex; flex-direction: column; gap: 1rem; }
+
+  .task-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .task-card:hover { border-color: var(--primary); }
+
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .task-num { font-weight: 700; color: var(--primary); font-size: 1.05rem; }
+
+  .difficulty {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+  }
+  .difficulty.easy { background: #d1fae5; color: #065f46; }
+  .difficulty.medium { background: #fef3c7; color: #92400e; }
+  .difficulty.hard { background: #fee2e2; color: #991b1b; }
+  body.dark .difficulty.easy { background: #064e3b; color: #6ee7b7; }
+  body.dark .difficulty.medium { background: #422006; color: #fde68a; }
+  body.dark .difficulty.hard { background: #450a0a; color: #fca5a5; }
+
+  .task-text {
+    color: var(--text);
+    margin-bottom: 1rem;
+    white-space: pre-wrap;
+  }
+
+  .task-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 8px;
+  }
+
+  .solution {
+    display: none;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border);
+  }
+
+  .solution.show { display: block; animation: fadeIn 0.3s; }
+
+  .answer-box {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .answer-box input {
+    padding: 0.6rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    background: var(--card);
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: inherit;
+    max-width: 200px;
+  }
+
+  .answer-box input:focus { outline: none; border-color: var(--primary); }
+
+  .result-msg {
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    display: none;
+  }
+  .result-msg.correct { background: #d1fae5; color: #065f46; display: inline-block; }
+  .result-msg.wrong { background: #fee2e2; color: #991b1b; display: inline-block; }
+  body.dark .result-msg.correct { background: #064e3b; color: #6ee7b7; }
+  body.dark .result-msg.wrong { background: #450a0a; color: #fca5a5; }
+
+  .progress-bar {
+    width: 100%;
+    height: 10px;
+    background: var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 0.5rem 0;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--success));
+    border-radius: 10px;
+    transition: width 0.5s;
+    width: 0%;
+  }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  footer {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 1.8rem; }
+    .modal { padding: 1.5rem; margin: 1rem auto; }
+    .section-title { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <div class="logo">💻 ЕГЭ-Информатика</div>
+    <nav id="nav">
+      <button class="nav-btn active" data-page="home">Главная</button>
+      <button class="nav-btn" data-page="theory">Теория</button>
+      <button class="nav-btn" data-page="practice">Практика</button>
+      <button class="nav-btn" data-page="progress">Прогресс</button>
+    </nav>
+    <button class="theme-toggle" id="themeToggle" title="Сменить тему">🌙</button>
+  </div>
+</header>
+
+<main>
+  <!-- ГЛАВНАЯ -->
+  <section class="page active" id="page-home">
+    <div class="hero">
+      <h1>Готовься к ЕГЭ по информатике</h1>
+      <p>Теория, практика и подробные разборы заданий — всё в одном месте.</p>
+      <button class="btn" id="startBtn">Начать подготовку →</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card"><div class="number">27</div><div class="label">Заданий в ЕГЭ</div></div>
+      <div class="stat-card"><div class="number" id="tasksCount">0</div><div class="label">Задач с разбором</div></div>
+      <div class="stat-card"><div class="number">8</div><div class="label">Тем теории</div></div>
+      <div class="stat-card"><div class="number" id="solvedCount">0</div><div class="label">Решено задач</div></div>
+    </div>
+
+    <h2 class="section-title">С чего начать?</h2>
+    <div class="theory-grid">
+      <div class="theory-card" data-goto="theory">
+        <div class="icon">📚</div>
+        <h3>Изучи теорию</h3>
+        <p>Системы счисления, логика, алгоритмы и программирование</p>
+        <span class="badge">8 тем</span>
+      </div>
+      <div class="theory-card" data-goto="practice">
+        <div class="icon">✏️</div>
+        <h3>Реши задачи</h3>
+        <p>Практикуйся на реальных заданиях ЕГЭ с проверкой ответов</p>
+        <span class="badge">С разбором</span>
+      </div>
+      <div class="theory-card" data-goto="progress">
+        <div class="icon">📊</div>
+        <h3>Отследи прогресс</h3>
+        <p>Смотри статистику решённых задач и слабые темы</p>
+        <span class="badge">Статистика</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ТЕОРИЯ -->
+  <section class="page" id="page-theory">
+    <h2 class="section-title">📚 Теория по информатике</h2>
+    <p style="color:var(--text-light); margin-bottom:1.5rem;">Выбери тему, чтобы изучить теорию и разобрать примеры</p>
+    <div class="theory-grid" id="theoryGrid"></div>
+  </section>
+
+  <!-- ПРАКТИКА -->
+  <section class="page" id="page-practice">
+    <h2 class="section-title">✏️ Практика: задачи с разбором</h2>
+    <p style="color:var(--text-light); margin-bottom:1.5rem;">Реши задачу, проверь ответ и посмотри подробный разбор</p>
+
+    <div class="filters">
+      <select id="topicFilter">
+        <option value="all">Все темы</option>
+        <option value="systems">Системы счисления</option>
+        <option value="logic">Логика</option>
+        <option value="algorithms">Алгоритмы</option>
+        <option value="programming">Программирование</option>
+        <option value="graphs">Графы</option>
+      </select>
+      <select id="difficultyFilter">
+        <option value="all">Любая сложность</option>
+        <option value="easy">Лёгкие</option>
+        <option value="medium">Средние</option>
+        <option value="hard">Сложные</option>
+      </select>
+      <button class="btn btn-outline btn-sm" id="resetFilters">Сбросить</button>
+    </div>
+
+    <div class="task-list" id="taskList"></div>
+  </section>
+
+  <!-- ПРОГРЕСС -->
+  <section class="page" id="page-progress">
+    <h2 class="section-title">📊 Твой прогресс</h2>
+    <div class="stats">
+      <div class="stat-card"><div class="number" id="progSolved">0</div><div class="label">Решено задач</div></div>
+      <div class="stat-card"><div class="number" id="progTotal">0</div><div class="label">Всего задач</div></div>
+      <div class="stat-card"><div class="number" id="progPercent">0%</div><div class="label">Прогресс</div></div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:0.5rem;">Общий прогресс</h3>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+
+    <div class="panel">
+      <h3 style="margin-bottom:1rem;">Решённые задачи</h3>
+      <div id="solvedList" style="color:var(--text-light);">Пока нет решённых задач. Начни с раздела «Практика»!</div>
+    </div>
+  </section>
+</main>
+
+<footer>© 2024 ЕГЭ-Информатика · Учебный проект для подготовки к экзамену</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+/* ============ ДАННЫЕ: ТЕОРИЯ ============ */
+const theoryData = {
+  systems: {
+    icon: "🔢",
+    title: "Системы счисления",
+    short: "Перевод чисел между системами, арифметика",
+    content: `
+      <h2>Системы счисления</h2>
+      <h3>Основные понятия</h3>
+      <p>Система счисления — способ записи чисел с помощью цифр. В <b>позиционной</b> системе значение цифры зависит от её позиции.</p>
+      <ul>
+        <li><b>Двоичная (2)</b> — цифры 0, 1</li>
+        <li><b>Восьмеричная (8)</b> — цифры 0–7</li>
+        <li><b>Десятичная (10)</b> — цифры 0–9</li>
+        <li><b>Шестнадцатеричная (16)</b> — 0–9, A–F</li>
+      </ul>
+      <h3>Перевод из 10-й в другую систему</h3>
+      <p>Делим число на основание системы, записываем остатки в обратном порядке.</p>
+      <pre><code>Пример: 156₁₀ → ?
+156 / 2 = 78 ост. 0
+78  / 2 = 39 ост. 0
+39  / 2 = 19 ост. 1
+19  / 2 = 9  ост. 1
+9   / 2 = 4  ост. 1
+4   / 2 = 2  ост. 0
+2   / 2 = 1  ост. 0
+1   / 2 = 0  ост. 1
+
+Читаем снизу вверх: 10011100₂</code></pre>
+      <h3>Перевод в 10-ю систему</h3>
+      <pre><code>1011₂ = 1·2³ + 0·2² + 1·2¹ + 1·2⁰ = 8+0+2+1 = 11₁₀</code></pre>
+      <div class="tip">💡 Лайфхак: из 2-й в 8-ю группируем по 3 бита справа, в 16-ю — по 4 бита.</div>
+    `
+  },
+  logic: {
+    icon: "🧩",
+    title: "Алгебра логики",
+    short: "Операции И, ИЛИ, НЕ, таблицы истинности",
+    content: `
+      <h2>Алгебра логики</h2>
+      <h3>Базовые операции</h3>
+      <ul>
+        <li><b>НЕ (¬, NOT)</b> — инверсия, меняет 0↔1</li>
+        <li><b>И (∧, AND)</b> — конъюнкция, 1 только если оба 1</li>
+        <li><b>ИЛИ (∨, OR)</b> — дизъюнкция, 1 если хотя бы один 1</li>
+        <li><b>Импликация (→)</b> — ложно только при A=1, B=0</li>
+        <li><b>Эквивалентность (≡)</b> — 1 когда A и B равны</li>
+      </ul>
+      <h3>Таблица истинности</h3>
+      <pre><code>A B | A∧B | A∨B | A→B | A≡B
+0 0 |  0  |  0  |  1  |  1
+0 1 |  0  |  1  |  1  |  0
+1 0 |  0  |  1  |  0  |  0
+1 1 |  1  |  1  |  1  |  1</code></pre>
+      <h3>Законы де Моргана</h3>
+      <pre><code>¬(A ∧ B) = ¬A ∨ ¬B
+¬(A ∨ B) = ¬A ∧ ¬B</code></pre>
+    `
+  },
+  algorithms: {
+    icon: "⚙️",
+    title: "Алгоритмы",
+    short: "Блок-схемы, исполнители, циклы",
+    content: `
+      <h2>Алгоритмы и исполнители</h2>
+      <p>Алгоритм — конечная последовательность команд для исполнителя.</p>
+      <h3>Типы конструкций</h3>
+      <ul>
+        <li><b>Следование</b> — команды подряд</li>
+        <li><b>Ветвление</b> — if / else</li>
+        <li><b>Цикл</b> — while / for</li>
+      </ul>
+      <pre><code>a = 1
+for i in range(3):
+    a = a * 2 + 1
+# a: 1 → 3 → 7 → 15</code></pre>
+      <div class="tip">💡 Встречаются исполнители Черепашка, Кузнечик, Вычислитель — отслеживай переменные.</div>
+    `
+  },
+  programming: {
+    icon: "💻",
+    title: "Программирование",
+    short: "Python: циклы, массивы, функции",
+    content: `
+      <h2>Программирование (Python)</h2>
+      <pre><code># Переменные и типы
+x = 10
+y = 3.14
+s = "hello"
+flag = True
+
+# Условия
+if x > 5:
+    print("больше")
+elif x == 5:
+    print("равно")
+else:
+    print("меньше")
+
+# Циклы
+for i in range(1, 11):
+    print(i)
+
+while x > 0:
+    x -= 1</code></pre>
+      <h3>Списки</h3>
+      <pre><code>nums = [3, 1, 4, 1, 5]
+nums.append(9)
+nums.sort()
+print(nums[0], sum(nums))</code></pre>
+      <h3>Функции</h3>
+      <pre><code>def factorial(n):
+    r = 1
+    for i in range(2, n + 1):
+        r *= i
+    return r
+print(factorial(5))  # 120</code></pre>
+    `
+  },
+  graphs: {
+    icon: "🕸️",
+    title: "Графы",
+    short: "Вершины, рёбра, пути, деревья",
+    content: `
+      <h2>Графы</h2>
+      <p><b>Граф</b> — набор вершин и рёбер между ними.</p>
+      <ul>
+        <li><b>Ориентированный</b> — рёбра с направлением</li>
+        <li><b>Взвешенный</b> — у рёбер есть вес</li>
+        <li><b>Дерево</b> — связный граф без циклов</li>
+      </ul>
+      <pre><code>graph = {
+  'A': ['B', 'C'],
+  'B': ['A'],
+  'C': ['A']
+}</code></pre>
+      <p>Для кратчайшего пути: BFS (без весов), Дейкстра (с весами).</p>
+    `
+  },
+  databases: {
+    icon: "🗄️",
+    title: "Базы данных",
+    short: "Таблицы, запросы, SQL",
+    content: `
+      <h2>Базы данных</h2>
+      <p>Данные хранятся в таблицах: строки — записи, столбцы — поля.</p>
+      <h3>Ключи</h3>
+      <ul>
+        <li><b>Первичный</b> — уникально идентифицирует запись</li>
+        <li><b>Внешний</b> — ссылается на первичный ключ другой таблицы</li>
+      </ul>
+      <pre><code>SELECT name, age
+FROM students
+WHERE age > 16
+ORDER BY age DESC;</code></pre>
+    `
+  },
+  networks: {
+    icon: "🌐",
+    title: "Компьютерные сети",
+    short: "IP-адреса, маски, протоколы",
+    content: `
+      <h2>Компьютерные сети</h2>
+      <p>IPv4 — 32 бита, 4 октета (0–255).</p>
+      <pre><code>IP:    192.168.1.10
+Маска: 255.255.255.0
+Сеть:  192.168.1.0/24</code></pre>
+      <p>Адрес сети = IP AND Маска (побитовая конъюнкция).</p>
+    `
+  },
+  coding: {
+    icon: "🔐",
+    title: "Кодирование информации",
+    short: "Биты, байты, кодировки",
+    content: `
+      <h2>Кодирование информации</h2>
+      <p>1 байт = 8 бит. 1 Кбайт = 1024 байт, 1 Мбайт = 1024 Кбайт.</p>
+      <p>Количество информации: <code>I = K · i</code>, где K — число символов, i — бит на символ.</p>
+      <p>Мощность алфавита: <code>N = 2^i</code>.</p>
+      <div class="tip">💡 Типичная задача: текст из 100 символов, алфавит 64 → i=6 бит → 100·6=600 бит=75 байт.</div>
+    `
+  }
+};
+
+/* ============ ДАННЫЕ: ЗАДАЧИ ============ */
+const tasksData = [
+  {
+    id: 1, topic: "systems", topicName: "Системы счисления", num: "Задание 1",
+    difficulty: "easy", text: "Сколько единиц в двоичной записи числа 156?",
+    answer: "4",
+    solution: `<h3>Разбор</h3>
+      <p>Переведём 156 в двоичную систему делением на 2:</p>
+      <pre><code>156 / 2 = 78 ост. 0
+78  / 2 = 39 ост. 0
+39  / 2 = 19 ост. 1
+19  / 2 = 9  ост. 1
+9   / 2 = 4  ост. 1
+4   / 2 = 2  ост. 0
+2   / 2 = 1  ост. 0
+1   / 2 = 0  ост. 1</code></pre>
+      <p>156₁₀ = 10011100₂. Считаем единицы → <b>4</b>.</p>`
+  },
+  {
+    id: 2, topic: "systems", topicName: "Системы счисления", num: "Задание 1",
+    difficulty: "medium", text: "Переведите число 2A₁₆ в десятичную систему счисления.",
+    answer: "42",
+    solution: `<h3>Разбор</h3>
+      <p>2A₁₆ = 2·16¹ + A·16⁰, где A = 10.</p>
+      <pre><code>2·16 + 10·1 = 32 + 10 = 42</code></pre>
+      <p>Ответ: <b>42</b>.</p>`
+  },
+  {
+    id: 3, topic: "logic", topicName: "Логика", num: "Задание 2",
+    difficulty: "easy", text: "Вычислите значение выражения: (1 ∧ 0) ∨ (1 ∧ 1).",
+    answer: "1",
+    solution: `<h3>Разбор</h3>
+      <pre><code>1 ∧ 0 = 0
+1 ∧ 1 = 1
+0 ∨ 1 = 1</code></pre>
+      <p>Ответ: <b>1</b>.</p>`
+  },
+  {
+    id: 4, topic: "logic", topicName: "Логика", num: "Задание 2",
+    difficulty: "medium", text: "Для какого наименьшего натурального x истинно выражение: (x > 5) ∧ (x < 10) ∧ (x нечётное)?",
+    answer: "7",
+    solution: `<h3>Разбор</h3>
+      <p>Ищем нечётное x в диапазоне (5; 10): 7, 9. Наименьшее — <b>7</b>.</p>`
+  },
+  {
+    id: 5, topic: "programming", topicName: "Программирование", num: "Задание 6",
+    difficulty: "medium", text: "Что выведет программа?\n\na = 1\nfor i in range(4):\n    a = a * 2\nprint(a)",
+    answer: "16",
+    solution: `<h3>Разбор</h3>
+      <p>Цикл выполняется 4 раза, каждый раз a удваивается:</p>
+      <pre><code>a = 1
+i=0: a = 2
+i=1: a = 4
+i=2: a = 8
+i=3: a = 16</code></pre>
+      <p>Ответ: <b>16</b>.</p>`
+  },
+  {
+    id: 6, topic: "programming", topicName: "Программирование", num: "Задание 6",
+    difficulty: "hard", text: "Что выведет программа?\n\ns = 0\nfor i in range(1, 6):\n    if i % 2 == 0:\n        s += i\nprint(s)",
+    answer: "6",
+    solution: `<h3>Разбор</h3>
+      <p>Суммируем чётные i от 1 до 5: 2 + 4 = <b>6</b>.</p>`
+  },
+  {
+    id: 7, topic: "algorithms", topicName: "Алгоритмы", num: "Задание 5",
+    difficulty: "medium", text: "Исполнитель удваивает число и прибавляет 1. Из 1 получили 15. Сколько команд «прибавить 1» было выполнено?",
+    answer: "3",
+    solution: `<h3>Разбор</h3>
+      <p>Идём от 15 обратно к 1:</p>
+      <pre><code>15 → (15-1)=14 (команда +1)
+14 → 14/2=7 (удвоение)
+7  → (7-1)=6 (команда +1)
+6  → 6/2=3 (удвоение)
+3  → (3-1)=2 (команда +1)
+2  → 2/2=1 (удвоение)</code></pre>
+      <p>Команд «прибавить 1» — <b>3</b>.</p>`
+  },
+  {
+    id: 8, topic: "graphs", topicName: "Графы", num: "Задание 1",
+    difficulty: "hard", text: "Сколько существует путей из A в D, если рёбра: A→B, A→C, B→D, C→D, B→C?",
+    answer: "3",
+    solution: `<h3>Разбор</h3>
+      <p>Все пути из A в D:</p>
+      <ul>
+        <li>A → B → D</li>
+        <li>A → B → C → D</li>
+        <li>A → C → D</li>
+      </ul>
+      <p>Итого: <b>3</b>.</p>`
+  },
+  {
+    id: 9, topic: "systems", topicName: "Системы счисления", num: "Задание 1",
+    difficulty: "easy", text: "Переведите 25₁₀ в двоичную систему счисления. В ответ запишите количество единиц.",
+    answer: "3",
+    solution: `<h3>Разбор</h3>
+      <pre><code>25 / 2 = 12 ост. 1
+12 / 2 = 6  ост. 0
+6  / 2 = 3  ост. 0
+3  / 2 = 1  ост. 1
+1  / 2 = 0  ост. 1
+
+25₁₀ = 11001₂ → 3 единицы</code></pre>`
+  },
+  {
+    id: 10, topic: "programming", topicName: "Программирование", num: "Задание 6",
+    difficulty: "medium", text: "Что выведет программа?\n\nx = 0\nfor i in range(1, 4):\n    for j in range(1, 3):\n        x += 1\nprint(x)",
+    answer: "6",
+    solution: `<h3>Разбор</h3>
+      <p>Внешний цикл — 3 итерации (1,2,3), внутренний — 2 итерации (1,2). Всего x увеличится 3·2 = <b>6</b> раз.</p>`
+  }
+];
+
+/* ============ СОСТОЯНИЕ ============ */
+let solvedTasks = JSON.parse(localStorage.getItem("solvedTasks") || "[]");
+
+/* ============ НАВИГАЦИЯ ============ */
+function goTo(pageId) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("page-" + pageId).classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.page === pageId));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (pageId === "progress") updateProgress();
+  if (pageId === "practice") renderTasks();
+}
+
+document.getElementById("nav").addEventListener("click", e => {
+  const btn = e.target.closest(".nav-btn");
+  if (btn) goTo(btn.dataset.page);
+});
+
+document.getElementById("startBtn").addEventListener("click", () => goTo("theory"));
+
+document.querySelectorAll("[data-goto]").forEach(card => {
+  card.addEventListener("click", () => goTo(card.dataset.goto));
+});
+
+/* ============ ТЕМА ============ */
+const themeToggle = document.getElementById("themeToggle");
+function applyTheme(dark) {
+  document.body.classList.toggle("dark", dark);
+  themeToggle.textContent = dark ? "☀️" : "🌙";
+  localStorage.setItem("theme", dark ? "dark" : "light");
+}
+themeToggle.addEventListener("click", () => applyTheme(!document.body.classList.contains("dark")));
+applyTheme(localStorage.getItem("theme") === "dark");
+
+/* ============ МОДАЛКА ============ */
+const overlay = document.getElementById("modalOverlay");
+const modalContent = document.getElementById("modalContent");
+function openModal(html) {
+  modalContent.innerHTML = html;
+  overlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeModal() {
+  overlay.classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.getElementById("modalClose").addEventListener("click", closeModal);
+overlay.addEventListener("click", e => { if (e.target === overlay) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+/* ============ ТЕОРИЯ ============ */
+function renderTheory() {
+  const grid = document.getElementById("theoryGrid");
+  grid.innerHTML = Object.entries(theoryData).map(([key, t]) => `
+    <div class="theory-card" data-theory="${key}">
+      <div class="icon">${t.icon}</div>
+      <h3>${t.title}</h3>
+      <p>${t.short}</p>
+      <span class="badge">Изучить →</span>
+    </div>
+  `).join("");
+
+  grid.querySelectorAll("[data-theory]").forEach(card => {
+    card.addEventListener("click", () => {
+      const t = theoryData[card.dataset.theory];
+      openModal(t.content);
+    });
+  });
+}
+renderTheory();
+
+/* ============ ПРАКТИКА ============ */
+const topicFilter = document.getElementById("topicFilter");
+const difficultyFilter = document.getElementById("difficultyFilter");
+
+function difficultyLabel(d) {
+  return { easy: "Лёгкая", medium: "Средняя", hard: "Сложная" }[d] || d;
+}
+
+function renderTasks() {
+  const topic = topicFilter.value;
+  const diff = difficultyFilter.value;
+
+  const filtered = tasksData.filter(t =>
+    (topic === "all" || t.topic === topic) &&
+    (diff === "all" || t.difficulty === diff)
+  );
+
+  const list = document.getElementById("taskList");
+  if (!filtered.length) {
+    list.innerHTML = `<p style="color:var(--text-light);">Нет задач по выбранным фильтрам.</p>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(t => {
+    const isSolved = solvedTasks.includes(t.id);
+    return `
+    <div class="task-card" id="task-${t.id}">
+      <div class="task-header">
+        <span class="task-num">${t.num} · ${t.topicName}</span>
+        <span class="difficulty ${t.difficulty}">${difficultyLabel(t.difficulty)}</span>
+      </div>
+      <div class="task-text">${escapeHtml(t.text)}</div>
+      <div class="task-actions">
+        <button class="btn btn-sm" data-check="${t.id}">Проверить ответ</button>
+        <button class="btn btn-outline btn-sm" data-solution="${t.id}">Показать разбор</button>
+      </div>
+      <div class="answer-box">
+        <input type="text" placeholder="Твой ответ..." id="input-${t.id}">
+        <button class="btn btn-sm" data-submit="${t.id}">Отправить</button>
+        <span class="result-msg" id="result-${t.id}"></span>
+      </div>
+      <div class="solution" id="sol-${t.id}">${t.solution}</div>
+    </div>`;
+  }).join("");
+
+  list.querySelectorAll("[data-solution]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const sol = document.getElementById("sol-" + btn.dataset.solution);
+      sol.classList.toggle("show");
+      btn.textContent = sol.classList.contains("show") ? "Скрыть разбор" : "Показать разбор";
+    });
+  });
+
+  list.querySelectorAll("[data-submit]").forEach(btn => {
+    btn.addEventListener("click", () => checkAnswer(Number(btn.dataset.submit)));
+  });
+
+  list.querySelectorAll("[data-check]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById("input-" + btn.dataset.check).focus();
+    });
+  });
+
+  list.querySelectorAll(".answer-box input").forEach(input => {
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter") checkAnswer(Number(input.id.replace("input-", "")));
+    });
+  });
+}
+
+function checkAnswer(id) {
+  const task = tasksData.find(t => t.id === id);
+  const input = document.getElementById("input-" + id);
+  const result = document.getElementById("result-" + id);
+  const val = input.value.trim();
+
+  if (!val) {
+    result.className = "result-msg wrong";
+    result.textContent = "Введи ответ";
+    return;
+  }
+
+  if (val.toLowerCase() === String(task.answer).toLowerCase()) {
+    result.className = "result-msg correct";
+    result.textContent = "✅ Верно!";
+    if (!solvedTasks.includes(id)) {
+      solvedTasks.push(id);
+      localStorage.setItem("solvedTasks", JSON.stringify(solvedTasks));
+      updateSolvedCount();
+    }
+  } else {
+    result.className = "result-msg wrong";
+    result.textContent = "❌ Неверно, попробуй ещё";
+  }
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+topicFilter.addEventListener("change", renderTasks);
+difficultyFilter.addEventListener("change", renderTasks);
+document.getElementById("resetFilters").addEventListener("click", () => {
+  topicFilter.value = "all";
+  difficultyFilter.value = "all";
+  renderTasks();
+});
+
+/* ============ СЧЁТЧИКИ ============ */
+function updateSolvedCount() {
+  document.getElementById("solvedCount").textContent = solvedTasks.length;
+}
+
+/* ============ ПРОГРЕСС ============ */
+function updateProgress() {
+  const solved = solvedTasks.length;
+  const total = tasksData.length;
+  const percent = total ? Math.round(solved / total * 100) : 0;
+
+  document.getElementById("progSolved").textContent = solved;
+  document.getElementById("progTotal").textContent = total;
+  document.getElementById("progPercent").textContent = percent + "%";
+  document.getElementById("progressFill").style.width = percent + "%";
+
+  const solvedList = document.getElementById("solvedList");
+  if (!solved) {
+    solvedList.innerHTML = `<p style="color:var(--text-light);">Пока нет решённых задач. Начни с раздела «Практика»!</p>`;
+    return;
+  }
+  solvedList.innerHTML = solved.map(id => {
+    const t = tasksData.find(x => x.id === id);
+    return t ? `<p>✅ ${t.num} · ${t.topicName}</p>` : "";
+  }).join("");
+}
+
+/* ============ ИНИЦИАЛИЗАЦИЯ ============ */
+document.getElementById("tasksCount").textContent = tasksData.length;
+updateSolvedCount();
+renderTasks();
+updateProgress();
+</script>
+</body>
+</html>
